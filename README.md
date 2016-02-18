@@ -1,6 +1,6 @@
 # Xml2 parser plugin for Embulk
 
-TODO: Write short description here and build.gradle file.
+Embulk parser plugin for parsing xml data. this plugin uses SAX parser, so you can parse very huge XML data with this plugin. also, support parsing sub-element under the root element which you specified. so you can parse and expand data more flexibly.
 
 ## Overview
 
@@ -9,30 +9,48 @@ TODO: Write short description here and build.gradle file.
 
 ## Configuration
 
-- **option1**: description (integer, required)
-- **option2**: description (string, default: `"myvalue"`)
-- **option3**: description (string, default: `null`)
+- **type**: specify this plugin as `"xml2"` (string, required)
+- **root**: root element to start fetching each entries (integer, required)
+- **schema**: specify the attribute of table and data type (required)
 
 ## Example
 
 ```yaml
-in:
-  type: any file input plugin type
-  parser:
-    type: xml2
-    option1: example1
-    option2: example2
+parser:
+  type: xml2
+  root: mediawiki/page
+  schema:
+    - { name: id, type: long }
+    - { name: title, type: string }
+    - { name: revision/timestamp, type: timestamp, format: '%Y-%m-%dT%H:%M:%SZ' }
+    - { name: revision/text, type: string }
 ```
 
-(If guess supported) you don't have to write `parser:` section in the configuration file. After writing `in:` section, you can let embulk guess `parser:` section using this command:
-
-```
-$ embulk gem install embulk-parser-xml2
-$ embulk guess -g xml2 config.yml -o guessed.yml
+Then you can fetch entries from the following xml (wikipedia archive xml format.) :
+```xml
+<mediawiki>
+  <page>
+    <id>1</id>
+    <title>title 1</title>
+    <revision>
+      <timestamp>2004-04-30T14:46:00Z</timestamp>
+      <text>body text</text>
+    </revision>
+  </page>
+  <page>
+    <id>2</id>
+    <title>title 2</title>
+    <revision>
+      <timestamp>2004-04-30T14:46:00Z</timestamp>
+      <text>body text</text>
+    </revision>
+  </page>
+</mediawiki>
 ```
 
 ## Build
 
 ```
-$ ./gradlew gem  # -t to watch change of files and rebuild continuously
+$ ./gradlew gem  
 ```
+
