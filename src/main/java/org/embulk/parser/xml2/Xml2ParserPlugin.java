@@ -29,6 +29,7 @@ import org.embulk.spi.util.Timestamps;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import org.slf4j.Logger;
 
 public class Xml2ParserPlugin
         implements ParserPlugin
@@ -72,10 +73,13 @@ public class Xml2ParserPlugin
                     private boolean isElementMatch = false;
                     private StringBuffer valueBuf = null;
                     private String currentSubElementName = null;
+                    private int extractedTotalPageNum = 0;
+                    private Logger logger = Exec.getLogger(getClass());;
                     
                     @Override
                     public void startDocument() throws SAXException {
                         currentXPath = new Stack<String>();
+                        logger.info("start parsing document.");
                     }
 
                     @Override
@@ -137,6 +141,7 @@ public class Xml2ParserPlugin
                         String path = toXPath(currentXPath);
                         if (path.equals(rootElementName)) {
                             pageBuilder.addRecord();
+                            extractedTotalPageNum++;
                         }
                         
                         // if isElementMatch is true, set data to Page.
@@ -198,6 +203,11 @@ public class Xml2ParserPlugin
                             return;
                         }
                         valueBuf.append(ch,offset,length);
+                    }
+                    
+                    @Override
+                    public void endDocument() {
+                        logger.info("end parsing document. total extracted page count is : " + extractedTotalPageNum);
                     }
                 });
                 pageBuilder.flush();
