@@ -79,7 +79,7 @@ public class Xml2ParserPlugin
                     @Override
                     public void startDocument() throws SAXException {
                         currentXPath = new Stack<String>();
-                        logger.info("start parsing document.");
+                        logger.debug("start parsing document.");
                     }
 
                     @Override
@@ -207,7 +207,7 @@ public class Xml2ParserPlugin
                     
                     @Override
                     public void endDocument() {
-                        logger.info("end parsing document. total extracted page count is : " + extractedTotalPageNum);
+                        logger.debug("end parsing document. total extracted page count is : " + extractedTotalPageNum);
                     }
                 });
                 pageBuilder.flush();
