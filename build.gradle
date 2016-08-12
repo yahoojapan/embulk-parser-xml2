@@ -76,7 +76,7 @@ task gemspec {
 Gem::Specification.new do |spec|
   spec.name          = "${project.name}"
   spec.version       = "${project.version}"
-  spec.authors       = ["takumyos"]
+  spec.authors       = ["yoshi0309"]
   spec.summary       = %[Xml2 parser plugin for Embulk]
   spec.description   = %[Parses Xml2 files read by other file input plugins.]
   spec.email         = ["takumyos@yahoo-corp.jp"]
