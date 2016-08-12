@@ -81,7 +81,7 @@ Gem::Specification.new do |spec|
   spec.description   = %[Parses Xml2 files read by other file input plugins.]
   spec.email         = ["takumyos@yahoo-corp.jp"]
   spec.licenses      = ["MIT"]
-  # TODO set this: spec.homepage      = "https://github.com/takumyos/embulk-parser-xml2"
+  spec.homepage      = "https://github.com/yahoojapan/embulk-parser-xml2"
 
   spec.files         = `git ls-files`.split("\n") + Dir["classpath/*.jar"]
   spec.test_files    = spec.files.grep(%r"^(test|spec)/")
